@@ -1,9 +1,11 @@
 from types import NoneType
 
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy
 
-from .forms import ProductFilterForm
+from .forms import ProductFilterForm, SupplierForm
 from .models import *
+from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 # Create your views here.
 
 def product_list(request):
@@ -40,7 +42,7 @@ def get_one_product(request, id):
     context = {
         'product': product
     }
-    return render(request, 'shop/product/one_product.html', context)
+    return render(request, 'shop/product/one_product_table.html', context)
 
 
 def get_one_filter_product(request):
@@ -59,4 +61,42 @@ def get_more_filter_product(request):
         'find_product': find_product
     }
     return render(request, 'shop/product/query_filter_product.html', context)
+
+
+class ListSupplier(ListView):
+    model = Supplier
+    template_name = 'shop/supplier/supplier_list.html'
+    allow_empty = True
+
+
+class CreateSupplier(CreateView):
+    model = Supplier
+    extra_context = {
+        'action': 'Создать'
+    }
+    template_name = 'shop/supplier/supplier_form.html'
+    form_class = SupplierForm
+
+
+class UpdateSupplier(UpdateView):
+    model = Supplier
+    extra_context = {
+        'action': 'Изменить'
+    }
+    template_name = 'shop/supplier/supplier_form.html'
+    form_class = SupplierForm
+
+
+class DetailSupplier(DetailView):
+    model = Supplier
+    template_name = 'shop/supplier/supplier_detail.html'
+
+
+class DeleteSupplier(DeleteView):
+    model = Supplier
+    template_name = 'shop/supplier/supplier_confirm_delete.html'
+    success_url = reverse_lazy('supplier_list')
+
+
+
 

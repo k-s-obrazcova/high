@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Информация о {{ product.name }}</title>
+    <link rel="stylesheet" href="{% static 'shop/css/bootstrap.css' %}">
+</head>
+<body>
+<h1 style="display: flex; justify-content: center;">{{ product.name }}</h1>
+<div class="p-3">
+    <table class="table table-dark table-bordered table-striped-columns my-2">
+        <thead class="table-success">
+        <tr>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Стоимость</th>
+            <th>В наличии на складах</th>
+            <th>Теги</th>
+            <th>Изображение</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ product.name }}</td>
+            <td>
+                {% if product.description %}
+                    {{ product.description }}
+                {% else %}
+                    Описание отсутствует
+                {% endif %}
+            </td>
+            <td>{{ product.price }} руб.</td>
+            <td>
+                <ul>
+                    {% for warehouse in product.warehouse.all %}
+                        <li>{{ warehouse.location }}</li>
+                    {% empty %}
+                        <li>Нет в наличии на складах</li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    {% for tag in product.tag.all %}
+                        <li>{{ tag.name }}</li>
+                    {% empty %}
+                        <li>Нет актуальных тегов</li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>
+                {% if product.photo %}
+                    <img src="{{ product.photo.url }}" alt="..." style="max-width: 400px;max-height: 400px; object-fit: contain; border-radius: 50%">
+                {% else %}
+                    <img src="{% static 'shop/image/no_photo.jpg' %}" alt="...">
+                {% endif %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="{% url 'product_filter_page' %}" class="btn btn-outline-warning my-2">Обратно к каталогу</a>
+</div>
+</body>
+</html>

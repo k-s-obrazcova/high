@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ action }} поставщика</title>
+    <link rel="stylesheet" href="{% static 'shop/css/bootstrap.css' %}">
+</head>
+<body>
+<div class="container">
+    <h1>{{ action }} поставщика</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button type="submit" class="btn btn-primary">{{ action }} </button>
+    </form>
+    <a href="{% url 'supplier_list' %}" class="btn btn-outline-success">Обратно к списку поставщиков</a>
+</div>
+</body>
+</html>

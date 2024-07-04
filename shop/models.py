@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse_lazy
 
 # Create your models here.
 MAX_LENGTH_CHAR = 255
@@ -14,6 +15,9 @@ class Supplier(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse_lazy('supplier_detail', kwargs={'pk':self.pk})
 
     class Meta:
         verbose_name = 'Поставщик'

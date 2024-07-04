@@ -40,3 +40,15 @@ class ProductFilterForm(forms.Form):
         )
 
    )
+class SupplierForm(forms.ModelForm):
+    class Meta:
+        model = Supplier
+        fields = (
+            'name',
+            'agent_firstname',
+            'agent_name',
+            'agent_surname',
+            'agent_telephone',
+            'address',
+            'is_exists'
+        )
