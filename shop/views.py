@@ -67,6 +67,7 @@ class ListSupplier(ListView):
     model = Supplier
     template_name = 'shop/supplier/supplier_list.html'
     allow_empty = True
+    paginate_by = 1
 
 
 class CreateSupplier(CreateView):
