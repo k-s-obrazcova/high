@@ -26,7 +26,7 @@
                 <tr>
                     <td>
                         {% if product.photo %}
-                            <img src="{{ product.photo.url }}" alt="...">
+                            <img src="{{ product.photo.url }}" style="max-height: 100px; max-width: 100px; object-fit: contain; border-radius: 20px" alt="...">
                         {% else %}
                             <img src="{% static 'shop/image/no_photo.jpg' %}" alt="...">
                         {% endif %}
@@ -60,6 +60,7 @@
     </table>
     <a href="{% url 'product_filter_page' %}" class="btn btn-outline-primary my-2"> Обратно к каталогу</a>
     {% if basket|length > 0 %}
-        <a href="{% url 'order_open' %}" class="btn btn-outline-dark">Купить</a>
+        <a href="{% url 'open_order' %}" class="btn btn-outline-dark">Купить</a>
     {% endif %}
 </div>
+{% endblock %}

@@ -3,11 +3,19 @@ from types import NoneType
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 
+from basket.forms import BasketAddProductForm
 from .forms import ProductFilterForm, SupplierForm
 from .models import *
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 
+from .serializer import OrderSerializer
 from .utils import CalculateMoney
+
+from django.http import JsonResponse
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import viewsets
 
 
 # Create your views here.
@@ -18,6 +26,7 @@ def product_list(request):
         'product_list': list_product
     }
     return render(request, 'shop/product/catalog.html', context)
+
 
 def product_list_with_filter(request):
     list_product = Product.objects.all()
@@ -44,7 +53,8 @@ def product_list_with_filter(request):
 def get_one_product(request, id):
     product = get_object_or_404(Product, pk=id)
     context = {
-        'product': product
+        'product': product,
+        'form_basket': BasketAddProductForm
     }
     return render(request, 'shop/product/one_product_table.html', context)
 
@@ -55,6 +65,7 @@ def get_one_filter_product(request):
         'find_product': find_product
     }
     return render(request, 'shop/product/query_filter_product.html', context)
+
 
 def get_more_filter_product(request):
     find_product = Product.objects.filter(
@@ -102,9 +113,11 @@ class DeleteSupplier(DeleteView):
     template_name = 'shop/supplier/supplier_confirm_delete.html'
     success_url = reverse_lazy('supplier_list')
 
+
 class OrderDetail(DetailView, CalculateMoney):
     model = Order
     template_name = 'shop/order.html'
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         order = context.get('object')
@@ -113,7 +126,22 @@ class OrderDetail(DetailView, CalculateMoney):
         return context
 
 
+def test_json(request):
+    return JsonResponse({
+        'message': 'Данное сообщение в формате JSON',
+        'product': reverse_lazy('product_filter_page'),
+    })
 
 
-
-
+@api_view(['GET', 'POST'])
+def order_api_list(request, format=None):
+    if request.method == 'GET':
+        order_list = Order.objects.all()
+        serializer = OrderSerializer(order_list, many=True)
+        return Response({'orders': serializer.data})
+    elif request.method == 'POST':
+        serializer = OrderSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

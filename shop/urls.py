@@ -15,4 +15,8 @@ urlpatterns = [
     path('supplier/delete/<int:pk>/', DeleteSupplier.as_view(), name='supplier_delete'),
 
     path('order/<int:pk>/', OrderDetail.as_view(), name='order_detail'),
+
+    path('api/', test_json, name='api_test'),
+    path('api/orders/', order_api_list, name='api_order_list')
+
 ]
