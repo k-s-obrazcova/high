@@ -8,11 +8,11 @@ from .forms import ProductFilterForm, SupplierForm
 from .models import *
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 
-from .serializer import OrderSerializer
+from .serializer import *
 from .utils import CalculateMoney
 
 from django.http import JsonResponse
-from rest_framework import status
+from rest_framework import status, mixins
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import viewsets
@@ -145,3 +145,87 @@ def order_api_list(request, format=None):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def order_api_detail(request, pk, format=None):
+    order_obj = get_object_or_404(Order, pk=pk)
+    if order_obj:
+        if request.method == 'GET':
+            serializer = OrderSerializer(order_obj)
+            return Response(serializer.data)
+        elif request.method == 'PUT':
+            serializer = OrderSerializer(order_obj, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({'message': 'Данные успешно обновлены', 'order': serializer.data})
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        elif request.method == 'DELETE':
+            order_obj.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+
+class ProductViewSetSmall(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+
+    def get_serializer_class(self):
+        if self.action in ['create', 'update', 'partial_update']:
+            return ProductSerializer
+        return ProductSerializerSmall
+
+
+class SupplierViewSet(viewsets.ModelViewSet):
+    queryset = Supplier.objects.all()
+    serializer_class = SupplierSerializer
+
+
+class SupplyViewSet(viewsets.ModelViewSet):
+    queryset = Supply.objects.all()
+    serializer_class = SupplySerializer
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+class TagViewSet(viewsets.ModelViewSet):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+
+
+class ParametrViewSet(viewsets.ModelViewSet):
+    queryset = Parametr.objects.all()
+    serializer_class = ParametrSerializer
+
+
+class WarehouseViewSet(viewsets.ModelViewSet):
+    queryset = Warehouse.objects.all()
+    serializer_class = WarehouseSerializer
+
+
+class InventoryViewSet(viewsets.ModelViewSet):
+    queryset = Inventory.objects.all()
+    serializer_class = InventorySerializer
+
+
+class ReviewViewSet(viewsets.ModelViewSet):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
+
+class SupplierViewSetFilter(mixins.RetrieveModelMixin,
+                            mixins.ListModelMixin,
+                            mixins.CreateModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.DestroyModelMixin,
+                            viewsets.GenericViewSet):
+    queryset = Supplier.objects.all()
+    serializer_class = SupplierSerializer
