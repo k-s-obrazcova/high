@@ -9,6 +9,8 @@ from .forms import ProductFilterForm, SupplierForm
 from .models import *
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 
+import datetime
+
 from .serializer import *
 from .utils import CalculateMoney
 
@@ -250,3 +252,23 @@ class SupplierViewSetFilter(mixins.RetrieveModelMixin,
                             viewsets.GenericViewSet):
     queryset = Supplier.objects.all()
     serializer_class = SupplierSerializer
+
+
+def template_filter_django(request):
+    context = {
+        'digit': 84,
+        'stringText': "some text new test",
+        'bool': True,
+        'boolSecond': False,
+        'datetimeNow': datetime.datetime.now(),
+        'var1': 'Var',
+        'var2': '',
+        'var3': None,
+        'dict_col': [
+            {'name': 'Karina', 'price': 8900},
+            {'name': 'Alice', 'price': 19785},
+            {'name': 'Sam', 'price': 4000},
+        ]
+
+    }
+    return render(request, 'shop/test_filter_tag/filters.html', context=context)

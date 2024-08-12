@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title_name %}
+    Пример фильтров в Django
+{% endblock %}
+
+{% block content %}
+    <h1>Пример фильтров в Django</h1>
+    <div>
+        <p><b>Добавление числа(add):</b>{{ digit|add:"6" }}</p>
+        <p><b>Добавление текста(add):</b>{{ stringText|add:" New add text!" }}</p>
+        <p><b>Удаление данных(cut):</b>{{ stringText|cut:" " }}</p>
+
+        <p><b>День месяца(от 01 до 31):</b>{{ datetimeNow|date:"d" }}</p>
+        <p><b>Полное название дня недели:</b>{{ datetimeNow|date:"l" }}</p>
+        <p><b>Номер недели в году(от 01 до 53):</b>{{ datetimeNow|date:"W" }}</p>
+        <p><b>Аббревиатура месяца:</b>{{ datetimeNow|date:"M" }}</p>
+        <p><b>Часовой пояс:</b>{{ datetimeNow|date:"T" }}</p>
+        <p><b>Год в 4-х значном формате:</b>{{ datetimeNow|date:"Y" }}</p>
+        <p><b>Аббревиатура дня недели:</b>{{ datetimeNow|date:"D" }}</p>
+        <p><b>Полное название месяца:</b>{{ datetimeNow|date:"F" }}</p>
+        <p><b>Месяц в числовом формате(от 01 до 12):</b>{{ datetimeNow|date:"m" }}</p>
+        <p><b>Год в 2-х значном формате:</b>{{ datetimeNow|date:"y" }}</p>
+        <p><b>Часы(от 00 до 23):</b>{{ datetimeNow|date:"H" }}</p>
+        <p><b>Минуты(от 00 до 59):</b>{{ datetimeNow|date:"i" }}</p>
+        <p><b>Секунды(от 00 до 59):</b>{{ datetimeNow|date:"s" }}</p>
+
+        <p><b>Проверка на пустоту 1: </b>{{ var1|default:"It's default" }}</p>
+        <p><b>Проверка на пустоту 2: </b>{{ var2|default:"It's default" }}</p>
+        <p><b>Проверка на пустоту 3: </b>{{ var3|default:"It's default" }}</p>
+
+        <p><b>Проверка на none 1:</b>{{ var1|default_if_none:"It's none" }}</p>
+        <p><b>Проверка на none 2:</b>{{ var2|default_if_none:"It's none" }}</p>
+        <p><b>Проверка на none 3:</b>{{ var3|default_if_none:"It's none" }}</p>
+
+
+    </div>
+{% endblock %}
