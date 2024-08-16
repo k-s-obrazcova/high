@@ -33,6 +33,13 @@
         <p><b>Проверка на none 2:</b>{{ var2|default_if_none:"It's none" }}</p>
         <p><b>Проверка на none 3:</b>{{ var3|default_if_none:"It's none" }}</p>
 
+        <p><b>Сортировка списка от меньшего к большему(dictsort): </b>{{ dict_col|dictsort:"price" }}</p>
+        <p><b>Сортировка списка от большего к меньшему(dictsortreversed): </b>{{ dict_col|dictsortreversed:"price" }}</p>
+        <p><b>Проверка на деление без остатка (divisibleby): </b>{{ digit|divisibleby:"3" }}</p>
+        <p><b>Проверка на деление с остатком (divisibleby): </b>{{ digit|divisibleby:"9" }}</p>
+
+        <p><b>Размерность (как у файлов): </b>{{ digit|add:"1974821"|filesizeformat }}</p>
+
 
     </div>
 {% endblock %}

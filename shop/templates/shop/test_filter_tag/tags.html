@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title_name %}
+    Пример тегов в Django
+{% endblock %}
+
+{% block content %}
+    <h1>Пример тегов в Django</h1>
+    <div>
+        <h2>Экранирование вкл</h2>
+        {% autoescape on %}
+            {{ html_code }}
+        {% endautoescape %}
+        <h2>Экранирование выкл</h2>
+        {% autoescape off %}
+            {{ html_code }}
+        {% endautoescape %}
+    </div>
+
+    <div>
+        <h2>Тут есть комментарий, но вы его не видите)</h2>
+        <!-- Тут будет текст, который вы увидите -->
+        {% comment %}
+    Это комментарий
+    для будущих программистов
+    {% endcomment %}
+    </div>
+
+    <div>
+        <h2>Перебор элементов или пустота</h2>
+        <ul>
+            {% for item in some_list %}
+                <li>{{ item }}</li>
+            {% empty %}
+                <li>Список пуст или не существует</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <h2>Цикл</h2>
+        <table class="table">
+            <tbody>
+            {% for item in some_list %}
+                <tr class="table-{% cycle 'primary' 'secondary' 'success' %}">
+                    <td>{{ item }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+    <h2>Спец. символы (скобочки)</h2>
+        {% templatetag openblock %}
+        {% templatetag closeblock %}
+        {% templatetag openvariable  %}
+        {% templatetag closevariable  %}
+        {% templatetag openbrace %}
+        {% templatetag closebrace %}
+        {% templatetag opencomment %}
+        {% templatetag closecomment %}
+
+    </div>
+{% endblock %}
