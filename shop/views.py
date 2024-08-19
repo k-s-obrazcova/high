@@ -277,7 +277,7 @@ def template_filter_django(request):
 def template_tag_django(request):
     context = {
         'html_code': '<b>Жирный шрифт</b>',
-        'some_list': ['text1', 'text2', 'text3', 'text4', 'text5', 'text6'],
+        'some_list': ['text1', 'text1', 'text3', 'text4', 'text5', 'text1'],
         'var1': None,
         'var2': 'False',
         'var3': 0,
@@ -286,3 +286,10 @@ def template_tag_django(request):
         'obj': Product.objects.get(pk=1),
     }
     return render(request, 'shop/test_filter_tag/tags.html', context=context)
+
+
+def product_list_regroup(request):
+    products = Product.objects.filter(exists=True)
+    context = {
+        'products': products
+    }

@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load custom %}
+
 {% block title_name %}
     Пример тегов в Django
 {% endblock %}
@@ -51,15 +53,59 @@
     </div>
 
     <div>
-    <h2>Спец. символы (скобочки)</h2>
+        <h2>Спец. символы (скобочки)</h2>
         {% templatetag openblock %}
         {% templatetag closeblock %}
-        {% templatetag openvariable  %}
-        {% templatetag closevariable  %}
+        {% templatetag openvariable %}
+        {% templatetag closevariable %}
         {% templatetag openbrace %}
         {% templatetag closebrace %}
         {% templatetag opencomment %}
         {% templatetag closecomment %}
-
     </div>
+
+    <div>
+        <h2>Проверка на повторяемость</h2>
+        <table class="table">
+            <tbody>
+            {% for item in some_list %}
+                <tr class="table-{% cycle 'secondary' 'danger' 'success' %}">
+                    {% ifchanged %}
+                        <td>{{ item }}</td>
+                    {% endifchanged %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <h2>Текущая дата (now)</h2>
+        {% now 'DATETIME_FORMAT' %}
+        {% now 'Сегодня D y' %}
+    </div>
+
+    <div>
+        <h2>Автогенератор текста/слов
+            1 - количество генераций
+            2 - что генерируем (w - слова, p - абзацы, b - текст)
+            3 - рандомность 1 абзаца</h2>
+        {% lorem 5 p %}
+    </div>
+
+    <div>
+        <h2>Отладочная информация</h2>
+        {% debug %}
+    </div>
+
+    <div>
+        <h2>Собственные тэги</h2>
+        <h3>multiply:</h3>
+        {% multiply 5 10 %}
+        {% multiply 2 4 %}
+        <h3>hello_user:</h3>
+        {% hello_user user %}
+    </div>
+
+
 {% endblock %}
