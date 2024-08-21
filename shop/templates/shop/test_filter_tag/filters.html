@@ -1,52 +1,205 @@
-{% extends 'base.html' %}
+{#{% extends 'base.html' %}#}
+{##}
+{#{% load custom %}#}
+{##}
+{#{% block title_name %}#}
+{#    Пример фильтров в Django#}
+{#{% endblock %}#}
+{##}
+{#{% block content %}#}
+{#    <h1>Пример фильтров в Django</h1>#}
+{#    <div>#}
+{#        <p><b>Добавление числа(add):</b>{{ digit|add:"6" }}</p>#}
+{#        <p><b>Добавление текста(add):</b>{{ stringText|add:" New add text!" }}</p>#}
+{#        <p><b>Удаление данных(cut):</b>{{ stringText|cut:" " }}</p>#}
+{##}
+{#        <p><b>День месяца(от 01 до 31):</b>{{ datetimeNow|date:"d" }}</p>#}
+{#        <p><b>Полное название дня недели:</b>{{ datetimeNow|date:"l" }}</p>#}
+{#        <p><b>Номер недели в году(от 01 до 53):</b>{{ datetimeNow|date:"W" }}</p>#}
+{#        <p><b>Аббревиатура месяца:</b>{{ datetimeNow|date:"M" }}</p>#}
+{#        <p><b>Часовой пояс:</b>{{ datetimeNow|date:"T" }}</p>#}
+{#        <p><b>Год в 4-х значном формате:</b>{{ datetimeNow|date:"Y" }}</p>#}
+{#        <p><b>Аббревиатура дня недели:</b>{{ datetimeNow|date:"D" }}</p>#}
+{#        <p><b>Полное название месяца:</b>{{ datetimeNow|date:"F" }}</p>#}
+{#        <p><b>Месяц в числовом формате(от 01 до 12):</b>{{ datetimeNow|date:"m" }}</p>#}
+{#        <p><b>Год в 2-х значном формате:</b>{{ datetimeNow|date:"y" }}</p>#}
+{#        <p><b>Часы(от 00 до 23):</b>{{ datetimeNow|date:"H" }}</p>#}
+{#        <p><b>Минуты(от 00 до 59):</b>{{ datetimeNow|date:"i" }}</p>#}
+{#        <p><b>Секунды(от 00 до 59):</b>{{ datetimeNow|date:"s" }}</p>#}
+{##}
+{#        <p><b>Проверка на пустоту 1: </b>{{ var1|default:"It's default" }}</p>#}
+{#        <p><b>Проверка на пустоту 2: </b>{{ var2|default:"It's default" }}</p>#}
+{#        <p><b>Проверка на пустоту 3: </b>{{ var3|default:"It's default" }}</p>#}
+{##}
+{#        <p><b>Проверка на none 1:</b>{{ var1|default_if_none:"It's none" }}</p>#}
+{#        <p><b>Проверка на none 2:</b>{{ var2|default_if_none:"It's none" }}</p>#}
+{#        <p><b>Проверка на none 3:</b>{{ var3|default_if_none:"It's none" }}</p>#}
+{##}
+{#        <p><b>Сортировка списка от меньшего к большему(dictsort): </b>{{ dict_col|dictsort:"price" }}</p>#}
+{#        <p><b>Сортировка списка от большего к меньшему(dictsortreversed): </b>{{ dict_col|dictsortreversed:"price" }}#}
+{#        </p>#}
+{#        <p><b>Проверка на деление без остатка (divisibleby): </b>{{ digit|divisibleby:"3" }}</p>#}
+{#        <p><b>Проверка на деление с остатком (divisibleby): </b>{{ digit|divisibleby:"9" }}</p>#}
+{##}
+{#        <p><b>Размерность (как у файлов): </b>{{ digit|add:"1974821"|filesizeformat }}</p>#}
+{##}
+{##}
+{#        <h2>Собственные фильтры</h2>#}
+{#        <p><b>Замена пробела на подчеркивание: </b>{{ "hello world code future test 2024" | underscore }}</p>#}
+{#        <p><b>Отображение строки в обратную сторону: </b>{{ "hello new test 2024 code future" | reverse }}</p>#}
+{##}
+{#    </div>#}
+{#{% endblock %}#}
 
-{% load custom %}
 
-{% block title_name %}
-    Пример фильтров в Django
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Регистрация</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background-image: url("images/fon.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
 
-{% block content %}
-    <h1>Пример фильтров в Django</h1>
-    <div>
-        <p><b>Добавление числа(add):</b>{{ digit|add:"6" }}</p>
-        <p><b>Добавление текста(add):</b>{{ stringText|add:" New add text!" }}</p>
-        <p><b>Удаление данных(cut):</b>{{ stringText|cut:" " }}</p>
+        .registration-container {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+        }
 
-        <p><b>День месяца(от 01 до 31):</b>{{ datetimeNow|date:"d" }}</p>
-        <p><b>Полное название дня недели:</b>{{ datetimeNow|date:"l" }}</p>
-        <p><b>Номер недели в году(от 01 до 53):</b>{{ datetimeNow|date:"W" }}</p>
-        <p><b>Аббревиатура месяца:</b>{{ datetimeNow|date:"M" }}</p>
-        <p><b>Часовой пояс:</b>{{ datetimeNow|date:"T" }}</p>
-        <p><b>Год в 4-х значном формате:</b>{{ datetimeNow|date:"Y" }}</p>
-        <p><b>Аббревиатура дня недели:</b>{{ datetimeNow|date:"D" }}</p>
-        <p><b>Полное название месяца:</b>{{ datetimeNow|date:"F" }}</p>
-        <p><b>Месяц в числовом формате(от 01 до 12):</b>{{ datetimeNow|date:"m" }}</p>
-        <p><b>Год в 2-х значном формате:</b>{{ datetimeNow|date:"y" }}</p>
-        <p><b>Часы(от 00 до 23):</b>{{ datetimeNow|date:"H" }}</p>
-        <p><b>Минуты(от 00 до 59):</b>{{ datetimeNow|date:"i" }}</p>
-        <p><b>Секунды(от 00 до 59):</b>{{ datetimeNow|date:"s" }}</p>
+        .avatar-wrapper {
+            width: 150px;
+            height: 150px;
+            cursor: pointer;
+            overflow: hidden;
+            border: 2px solid #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-right: 20px;
+        }
 
-        <p><b>Проверка на пустоту 1: </b>{{ var1|default:"It's default" }}</p>
-        <p><b>Проверка на пустоту 2: </b>{{ var2|default:"It's default" }}</p>
-        <p><b>Проверка на пустоту 3: </b>{{ var3|default:"It's default" }}</p>
+        .avatar-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
 
-        <p><b>Проверка на none 1:</b>{{ var1|default_if_none:"It's none" }}</p>
-        <p><b>Проверка на none 2:</b>{{ var2|default_if_none:"It's none" }}</p>
-        <p><b>Проверка на none 3:</b>{{ var3|default_if_none:"It's none" }}</p>
+        .avatar-label {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.7);
+            padding: 5px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
 
-        <p><b>Сортировка списка от меньшего к большему(dictsort): </b>{{ dict_col|dictsort:"price" }}</p>
-        <p><b>Сортировка списка от большего к меньшему(dictsortreversed): </b>{{ dict_col|dictsortreversed:"price" }}
-        </p>
-        <p><b>Проверка на деление без остатка (divisibleby): </b>{{ digit|divisibleby:"3" }}</p>
-        <p><b>Проверка на деление с остатком (divisibleby): </b>{{ digit|divisibleby:"9" }}</p>
+        .form-container {
+            display: flex;
+            flex-direction: column;
+        }
 
-        <p><b>Размерность (как у файлов): </b>{{ digit|add:"1974821"|filesizeformat }}</p>
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.8);
+            color: black;
+        }
 
+        input[type="file"] {
+            display: none;
+        }
 
-        <h2>Собственные фильтры</h2>
-        <p><b>Замена пробела на подчеркивание: </b>{{ "hello world code future test 2024" | underscore }}</p>
-        <p><b>Отображение строки в обратную сторону: </b>{{ "hello new test 2024 code future" | reverse }}</p>
+        button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
 
+        .login-link {
+            margin-top: 20px;
+            color: white;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="registration-container">
+    <div class="avatar-wrapper" id="avatarWrapper" onclick="document.getElementById('fileInput').click();">
+        <img id="avatar" src="images/avatar.png"/>
+        <span class="avatar-label">Аватар</span>
     </div>
-{% endblock %}
+    <form method="post" action="{% url 'regis' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-container">
+            <div class="text">
+                <h1>Регистрация</h1>
+            </div>
+            <input type="text" id="username" name="username" placeholder="Имя пользователя" required>
+            <input type="email" id="email" name="email" placeholder="Email" required>
+            <input type="password" id="password1" name="password1" placeholder="Пароль" required>
+            <input type="password" id="password2" name="password2" placeholder="Повторите пароль" required>
+            <input type="file" id="fileInput" name="fileInput"/>
+            <input type="hidden" id="avatarUploaded" name="avatarUploaded" value="false">
+            <button type="submit">Зарегистрироваться</button>
+            <div class="login-link" onclick="window.location.href='/login/'">Уже есть аккаунт? Войти</div>
+        </div>
+    </form>
+
+</div>
+
+<script>
+    document.getElementById('fileInput').addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const avatarImage = document.getElementById('avatar');
+                avatarImage.setAttribute('src', event.target.result);
+                document.getElementById('avatarUploaded').value = "true";
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+
+<script>
+    document.querySelector('form').addEventListener('submit', function (event) {
+        const fileInput = document.getElementById('fileInput');
+        if (fileInput.files.length === 0) {
+            event.preventDefault();
+            alert('Пожалуйста, выберите файл для загрузки.');
+        }
+    });
+</script>
+
+
+</body>
+</html>

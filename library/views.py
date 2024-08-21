@@ -5,6 +5,8 @@ from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from .models import *
+
+
 # Create your views here.
 
 def book_list(request):
@@ -14,12 +16,14 @@ def book_list(request):
     }
     return render(request, 'library/books/catalog.html', context)
 
+
 def book_details(request, id):
-    book = get_object_or_404(Books, pk = id)
+    book = get_object_or_404(Books, pk=id)
     context = {
         'book_object': book
     }
     return render(request, 'library/books/details.html', context)
+
 
 @permission_required('library.add_publishing_house')
 def publishing_house_create(request):
@@ -41,23 +45,30 @@ def publishing_house_create(request):
         }
         return render(request, 'library/publishing_house/create.html', context)
 
+
 def user_registration(request):
     if request.method == "POST":
-        form = RegistrationForm(request.POST)
+        form = RegistrationForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
-            print(user)
+            avatar_uploaded = request.POST.get('avatarUploaded', 'false')
+
+            if avatar_uploaded == "true" and 'fileInput' in request.FILES:
+                avatar = request.FILES['fileInput']
+                user.profile.avatar.save(avatar.name, avatar)
+            else:
+                user.profile.avatar = 'avatars/default_avatar.png'
+            user.save()
 
             login(request, user)
-
             messages.success(request, 'Вы успешно зарегистрированы')
-
             return redirect('catalog_book_page')
-        messages.error(request, 'Данные введены не верно')
-
+        else:
+            messages.error(request, 'Данные введены не верно')
     else:
         form = RegistrationForm()
     return render(request, 'library/auth/registration.html', {'form': form})
+
 
 def user_login(request):
     if request.method == "POST":
@@ -80,16 +91,19 @@ def user_login(request):
         form = LoginForm()
         return render(request, 'library/auth/login.html', {'form': form})
 
+
 def user_logout(request):
     logout(request)
     messages.warning(request, 'Вы вышли из аккаунта')
     return redirect('log in')
 
+
 def home_page(request):
     return render(request, 'library/index.html')
 
+
 def anonim(request):
-    print('is_active:',request.user.is_active)
+    print('is_active:', request.user.is_active)
     print('is_staff:', request.user.is_staff)
     print('is_superuser:', request.user.is_superuser)
     print('anonim', request.user.is_anonymous)
@@ -105,13 +119,16 @@ def anonim(request):
 def auth(request):
     return render(request, 'library/test/auth.html')
 
+
 @permission_required('library.add_publishing_house')
 def add_house(request):
     return render(request, 'library/test/add.html')
 
+
 @permission_required(['library.add_publishing_house', 'library.change_publishing_house'])
 def add_change_house(request):
     return render(request, 'library/test/add_change.html')
+
 
 @permission_required('library.change_only_telephone')
 def change_only_telephone_house(request):

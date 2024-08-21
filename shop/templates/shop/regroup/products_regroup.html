@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title_name %}
+    Каталог продуктов с группировкой
+{% endblock %}
+
+{% block content %}
+
+    {% regroup products by category as list_product %}
+
+    <ul>
+        {% for category in list_product %}
+            <li>{{ category.grouper }}
+                <ul>
+                    {% for product in category.list %}
+                        <li>{{ product.name }}: {{ product.price }} руб.</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

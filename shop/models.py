@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse_lazy
 
@@ -6,11 +7,13 @@ from shop.utils import sum_price_count
 # Create your models here.
 MAX_LENGTH_CHAR = 255
 
+
 class Supplier(models.Model):
     name = models.CharField(max_length=MAX_LENGTH_CHAR, verbose_name='Название')
     agent_firstname = models.CharField(max_length=MAX_LENGTH_CHAR, verbose_name='Фамилия представителя')
     agent_name = models.CharField(max_length=MAX_LENGTH_CHAR, verbose_name='Имя представителя')
-    agent_surname = models.CharField(max_length=MAX_LENGTH_CHAR, blank=True, null=True, verbose_name='Отчество представителя')
+    agent_surname = models.CharField(max_length=MAX_LENGTH_CHAR, blank=True, null=True,
+                                     verbose_name='Отчество представителя')
     agent_telephone = models.CharField(max_length=16, verbose_name='Телефон представителя')
     address = models.CharField(max_length=MAX_LENGTH_CHAR, verbose_name='Адрес')
     is_exists = models.BooleanField(default=True, verbose_name='Логическое удаление')
@@ -19,11 +22,12 @@ class Supplier(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse_lazy('supplier_detail', kwargs={'pk':self.pk})
+        return reverse_lazy('supplier_detail', kwargs={'pk': self.pk})
 
     class Meta:
         verbose_name = 'Поставщик'
         verbose_name_plural = 'Поставщики'
+
 
 class Supply(models.Model):
     date_supply = models.DateTimeField(verbose_name='Дата поставки')
@@ -38,6 +42,7 @@ class Supply(models.Model):
         verbose_name = 'Поставка'
         verbose_name_plural = 'Поставки'
 
+
 class Category(models.Model):
     name = models.CharField(max_length=MAX_LENGTH_CHAR, unique=True, verbose_name='Название')
     description = models.CharField(max_length=MAX_LENGTH_CHAR, null=True, blank=True, verbose_name='Описание')
@@ -48,6 +53,7 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=MAX_LENGTH_CHAR, unique=True, verbose_name='Название')
@@ -60,6 +66,7 @@ class Tag(models.Model):
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
 
+
 class Parametr(models.Model):
     name = models.CharField(max_length=MAX_LENGTH_CHAR, unique=True, verbose_name='Название')
 
@@ -69,6 +76,7 @@ class Parametr(models.Model):
     class Meta:
         verbose_name = 'Характеристика'
         verbose_name_plural = 'Характеристики'
+
 
 class Order(models.Model):
     SHOP = "SH"
@@ -81,7 +89,8 @@ class Order(models.Model):
     ]
     buyer_lastname = models.CharField(max_length=MAX_LENGTH_CHAR, verbose_name='Фамилия покупателя')
     buyer_name = models.CharField(max_length=MAX_LENGTH_CHAR, verbose_name='Имя покупателя')
-    buyer_surname = models.CharField(max_length=MAX_LENGTH_CHAR, null=True, blank=True, verbose_name='Отчество покупателя')
+    buyer_surname = models.CharField(max_length=MAX_LENGTH_CHAR, null=True, blank=True,
+                                     verbose_name='Отчество покупателя')
     comment = models.CharField(max_length=MAX_LENGTH_CHAR, verbose_name='Комментарий')
     delivery_address = models.CharField(max_length=MAX_LENGTH_CHAR, verbose_name='Адрес доставки')
     delivery_type = models.CharField(max_length=2, choices=TYPE_DELIVERY, default=SHOP, verbose_name='Способ доставки')
@@ -96,6 +105,7 @@ class Order(models.Model):
     class Meta:
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'
+
 
 class Product(models.Model):
     name = models.CharField(max_length=MAX_LENGTH_CHAR, unique=True, verbose_name='Название')
@@ -119,10 +129,11 @@ class Product(models.Model):
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
 
+
 class Pos_parametr(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT, verbose_name='Товар')
     parametr = models.ForeignKey(Parametr, on_delete=models.PROTECT, verbose_name='Характеристика')
-    value = models.CharField(max_length=MAX_LENGTH_CHAR,verbose_name='Значение')
+    value = models.CharField(max_length=MAX_LENGTH_CHAR, verbose_name='Значение')
 
     def __str__(self):
         return f'{self.product.name} - {self.value}'
@@ -130,6 +141,7 @@ class Pos_parametr(models.Model):
     class Meta:
         verbose_name = 'Характеристика товара'
         verbose_name_plural = 'Характеристики товаров'
+
 
 class Pos_order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT, verbose_name='Товар')
@@ -142,9 +154,11 @@ class Pos_order(models.Model):
 
     def sum_pos_order(self):
         return sum_price_count(price=self.product.price, count=self.count, discount=self.discount)
+
     class Meta:
         verbose_name = 'Позиция заказа'
         verbose_name_plural = 'Позиции заказов'
+
 
 class Pos_supply(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT, verbose_name='Товар')
@@ -173,10 +187,12 @@ class Warehouse(models.Model):
     ]
     owner_lastname = models.CharField(max_length=MAX_LENGTH_CHAR, verbose_name='Фамилия владельца')
     owner_name = models.CharField(max_length=MAX_LENGTH_CHAR, verbose_name='Имя владельца')
-    owner_surname = models.CharField(max_length=MAX_LENGTH_CHAR, blank=True, null=True, verbose_name='Отчество владельца')
+    owner_surname = models.CharField(max_length=MAX_LENGTH_CHAR, blank=True, null=True,
+                                     verbose_name='Отчество владельца')
     location = models.CharField(max_length=MAX_LENGTH_CHAR, verbose_name='Расположение')
     capacity = models.PositiveIntegerField(default=10000, verbose_name='Вместимость')
-    main_delivery_type = models.CharField(max_length=2, choices=TYPE_DELIVERY, default=ALL,verbose_name='Способ отправки')
+    main_delivery_type = models.CharField(max_length=2, choices=TYPE_DELIVERY, default=ALL,
+                                          verbose_name='Способ отправки')
 
     def __str__(self):
         return f'{self.location} ({self.capacity} ячеек)'
@@ -184,6 +200,7 @@ class Warehouse(models.Model):
     class Meta:
         verbose_name = 'Склад'
         verbose_name_plural = 'Склады'
+
 
 class Inventory(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT, verbose_name='Товар')
@@ -198,6 +215,7 @@ class Inventory(models.Model):
         verbose_name = 'Хранение позиции'
         verbose_name_plural = 'Хранения позиций'
 
+
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товар')
     user_name = models.CharField(max_length=MAX_LENGTH_CHAR, verbose_name='Имя пользователя')
@@ -211,3 +229,11 @@ class Review(models.Model):
     class Meta:
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    avatar = models.ImageField(upload_to='avatars/', default='avatars/default_avatar.png')
+
+    def __str__(self):
+        return self.user.username

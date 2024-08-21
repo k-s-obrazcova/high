@@ -289,7 +289,8 @@ def template_tag_django(request):
 
 
 def product_list_regroup(request):
-    products = Product.objects.filter(exists=True)
+    products = Product.objects.filter(is_exists=True)
     context = {
         'products': products
     }
+    return render(request, 'shop/regroup/products_regroup.html', context)

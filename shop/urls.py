@@ -24,6 +24,8 @@ urlpatterns = [
     path('filter/', template_filter_django, name='template_filter_django'),
     path('tags/', template_tag_django, name='template_tag_django'),
 
+    path('regroup/', product_list_regroup, name='product_regroup')
+
 ]
 
 router = routers.SimpleRouter()

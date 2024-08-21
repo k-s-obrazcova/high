@@ -55,3 +55,7 @@ class InventoryAdmin(admin.ModelAdmin):
 class ReviewAdmin(admin.ModelAdmin):
     pass
 
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    pass
+
